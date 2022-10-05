@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { toast } from 'react-toastify';
 
 const DEFAULT_STATE = {
   text: '',
@@ -9,11 +10,16 @@ export class Searchbar extends Component {
   state = { ...DEFAULT_STATE };
 
   handleChange = e => {
-    this.setState({ text: e.target.value });
+    this.setState({ text: e.target.value.toLowerCase() });
   };
 
   handleSubmit = e => {
     e.preventDefault();
+
+    if (this.state.text.trim() === '') {
+      toast.error('Введите текст запроса!', { position: 'top-center' });
+      return;
+    }
 
     this.props.onForm(this.state);
     this.reset();
