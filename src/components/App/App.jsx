@@ -7,20 +7,19 @@ import { ImageGallery } from 'components/ImageGallery';
 
 export class App extends Component {
   state = {
+    page: 1,
     query: '',
   };
 
   onForm = ({ text }) => {
     this.setState({ query: text });
-    console.log({ text });
   };
 
   render() {
     return (
       <div>
         <Searchbar onForm={this.onForm} />
-        <ImageGallery query={this.state.query} />
-
+        <ImageGallery query={this.state.query} page={this.state.page} />
         <ToastContainer transition={Flip} />
       </div>
     );
