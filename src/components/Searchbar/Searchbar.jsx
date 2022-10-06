@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { toast } from 'react-toastify';
 
@@ -63,3 +64,8 @@ export class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSearch: PropTypes.func,
+  onForm: PropTypes.func.isRequired,
+};

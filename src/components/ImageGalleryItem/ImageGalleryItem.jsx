@@ -1,15 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Item, Img } from './ImageGalleryItem.styled';
 
 export const ImageGalleryItem = ({
-  id,
   webformatURL,
   tags,
   largeImageURL,
   onClickImage,
 }) => {
   return (
-    <Item key={id}>
+    <Item>
       <Img
         src={webformatURL}
         alt={tags}
@@ -18,4 +18,11 @@ export const ImageGalleryItem = ({
       />
     </Item>
   );
+};
+
+ImageGalleryItem.propTypes = {
+  webformatURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  onClickImage: PropTypes.func.isRequired,
 };

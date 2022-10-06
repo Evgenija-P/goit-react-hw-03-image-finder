@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import { Button } from 'components/Button';
@@ -87,3 +88,10 @@ export class ImageGallery extends Component {
     );
   }
 }
+
+ImageGallery.propTypes = {
+  page: PropTypes.number.isRequired,
+  query: PropTypes.string.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+  modalImage: PropTypes.func.isRequired,
+};
