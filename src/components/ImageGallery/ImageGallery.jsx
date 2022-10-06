@@ -14,7 +14,6 @@ export class ImageGallery extends Component {
     page: 1,
     perPage: 12,
     isLoading: false,
-    error: null,
     largeImageURL: '',
     tags: '',
     showButton: false,
@@ -29,7 +28,7 @@ export class ImageGallery extends Component {
     const currentPage = this.state.page;
 
     if (prevQuery !== nextQuery) {
-      this.setState({ items: [] });
+      this.setState({ items: [], page: 1 });
     }
 
     if (prevPage !== currentPage || prevQuery !== nextQuery) {
@@ -42,9 +41,8 @@ export class ImageGallery extends Component {
                 items: [...state.items, ...images],
                 showButton: true,
               }
-            : { items: images, page: 1 }
+            : { items: images }
         );
-        this.props.modalImage(this.state.items);
       } catch {
         toast.error('Oops, something went wrong. Repeat one more time!');
       } finally {
@@ -66,25 +64,23 @@ export class ImageGallery extends Component {
   render() {
     const { isLoading, items, page, showButton } = this.state;
     return (
-      <>
-        <div>
-          {isLoading && <Loader />}
-          {items && (
-            <List>
-              {items.map(({ id, webformatURL, tags, largeImageURL }) => (
-                <ImageGalleryItem
-                  key={id}
-                  webformatURL={webformatURL}
-                  tags={tags}
-                  largeImageURL={largeImageURL}
-                  onClickImage={this.onClickImage}
-                />
-              ))}
-            </List>
-          )}
-          {showButton && <Button page={page} onClickButton={this.onClick} />}
-        </div>
-      </>
+      <div>
+        {isLoading && <Loader />}
+        {items && (
+          <List>
+            {items.map(({ id, webformatURL, tags, largeImageURL }) => (
+              <ImageGalleryItem
+                key={id}
+                webformatURL={webformatURL}
+                tags={tags}
+                largeImageURL={largeImageURL}
+                onClickImage={this.onClickImage}
+              />
+            ))}
+          </List>
+        )}
+        {showButton && <Button page={page} onClickButton={this.onClick} />}
+      </div>
     );
   }
 }

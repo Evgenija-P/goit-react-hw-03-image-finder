@@ -31,7 +31,6 @@ export class Searchbar extends Component {
     }
 
     this.props.onForm(this.state);
-    this.reset();
   };
 
   reset = () => {
