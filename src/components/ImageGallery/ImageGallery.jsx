@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { MagnifyingGlass } from 'react-loader-spinner';
 
 import { Button } from 'components/Button';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import { Loader } from 'components/Loader';
+import { List } from './ImageGallery.styled';
 
 export class ImageGallery extends Component {
   state = {
@@ -12,6 +13,8 @@ export class ImageGallery extends Component {
     perPage: 12,
     isLoading: false,
     error: null,
+    largeImageURL: '',
+    tags: '',
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -43,6 +46,7 @@ export class ImageGallery extends Component {
               }
             : { items: response.data.hits, page: 1 }
         );
+        this.props.modalImage(this.state.items);
         console.log(this.state.items);
       } catch (error) {
       } finally {
@@ -56,38 +60,32 @@ export class ImageGallery extends Component {
     console.log(page);
   };
 
+  onClickImage = ({ largeImageURL, tags }) => {
+    this.setState({ largeImageURL, tags });
+    this.props.modalImage({ largeImageURL, tags });
+    this.props.toggleModal();
+    console.log({ largeImageURL, tags });
+  };
+
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, items, page } = this.state;
     return (
       <div>
-        {isLoading && (
-          <MagnifyingGlass
-            visible={true}
-            height="100"
-            width="100"
-            ariaLabel="MagnifyingGlass-loading"
-            wrapperStyle={{}}
-            wrapperClass="MagnifyingGlass-wrapper"
-            glassColor="#c0efff"
-            color="#e15b64"
-          />
-        )}
-        {this.state.items && (
-          <ul className="gallery">
-            <span>{this.props.query}</span>
-
-            {this.state.items.map(({ id, webformatURL, tags }) => (
+        {isLoading && <Loader />}
+        {items && (
+          <List>
+            {items.map(({ id, webformatURL, tags, largeImageURL }) => (
               <ImageGalleryItem
                 key={id}
                 webformatURL={webformatURL}
                 tags={tags}
+                largeImageURL={largeImageURL}
+                onClickImage={this.onClickImage}
               />
             ))}
-          </ul>
+          </List>
         )}
-        {this.state.items && (
-          <Button page={this.state.page} onClickButton={this.onClick} />
-        )}
+        {items && <Button page={page} onClickButton={this.onClick} />}
       </div>
     );
   }

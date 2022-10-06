@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { toast } from 'react-toastify';
 
+import {
+  SearchHeader,
+  SearchForm,
+  SearchButton,
+  ButtoTitle,
+  Input,
+} from './Searchbar.styled';
+
 const DEFAULT_STATE = {
   text: '',
 };
@@ -34,18 +42,13 @@ export class Searchbar extends Component {
     const id = nanoid(3);
 
     return (
-      <header className="searchbar">
-        <form className="form" onSubmit={this.handleSubmit}>
-          <button
-            type="submit"
-            className="button"
-            onClick={this.props.onSearch}
-          >
-            <span className="button-label">Search</span>
-          </button>
+      <SearchHeader>
+        <SearchForm onSubmit={this.handleSubmit}>
+          <SearchButton type="submit" onClick={this.props.onSearch}>
+            <ButtoTitle>Search</ButtoTitle>
+          </SearchButton>
 
-          <input
-            className="input"
+          <Input
             type="text"
             name="text"
             value={text}
@@ -55,8 +58,8 @@ export class Searchbar extends Component {
             placeholder="Search images and photos"
             onChange={this.handleChange}
           />
-        </form>
-      </header>
+        </SearchForm>
+      </SearchHeader>
     );
   }
 }

@@ -1,10 +1,10 @@
 import React from 'react';
+import { BTN } from './Button.styled';
 
 export const Button = ({ page, onClickButton }) => {
-  console.log(page);
   return (
-    <button type="button" onClick={() => onClickButton((page = page + 1))}>
+    <BTN type="button" onClick={() => onClickButton((page = page + 1))}>
       Load more
-    </button>
+    </BTN>
   );
 };
