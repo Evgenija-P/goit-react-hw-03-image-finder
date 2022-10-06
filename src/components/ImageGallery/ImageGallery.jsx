@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 
 import { Button } from 'components/Button';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Loader } from 'components/Loader';
 import { List } from './ImageGallery.styled';
 import { toast } from 'react-toastify';
-import { isDisabled } from '@testing-library/user-event/dist/utils';
+import { fetchImage } from '../api';
 
 export class ImageGallery extends Component {
   state = {
@@ -24,10 +23,6 @@ export class ImageGallery extends Component {
   async componentDidUpdate(prevProps, prevState) {
     const { page, perPage } = this.state;
 
-    const url = `https://pixabay.com/api/`;
-    const API_KEY = `key=29432031-54944c319385602ed128077f3`;
-    const urlOptions = `image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`;
-
     const prevQuery = prevProps.query;
     const nextQuery = this.props.query;
     const prevPage = prevState.page;
@@ -40,16 +35,14 @@ export class ImageGallery extends Component {
     if (prevPage !== currentPage || prevQuery !== nextQuery) {
       this.setState({ isLoading: true });
       try {
-        const response = await axios.get(
-          `${url}?${API_KEY}&q=${nextQuery}&${urlOptions}`
-        );
+        const images = await fetchImage(page, perPage, nextQuery);
         this.setState(state =>
           state.items
             ? {
-                items: [...state.items, ...response.data.hits],
+                items: [...state.items, ...images],
                 showButton: true,
               }
-            : { items: response.data.hits, page: 1 }
+            : { items: images, page: 1 }
         );
         this.props.modalImage(this.state.items);
       } catch {
@@ -89,8 +82,6 @@ export class ImageGallery extends Component {
               ))}
             </List>
           )}
-        </div>
-        <div>
           {showButton && <Button page={page} onClickButton={this.onClick} />}
         </div>
       </>
