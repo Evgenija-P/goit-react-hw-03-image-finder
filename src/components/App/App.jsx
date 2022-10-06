@@ -6,6 +6,7 @@ import { Searchbar } from 'components/Searchbar';
 import { ImageGallery } from 'components/ImageGallery';
 import { AppWrapper } from './App.styled';
 import { Modal } from 'components/Modal';
+
 export class App extends Component {
   state = {
     page: 1,
@@ -21,7 +22,6 @@ export class App extends Component {
 
   modalImage = ({ largeImageURL, tags }) => {
     this.setState({ modalUrl: largeImageURL, alt: tags });
-    console.log(this.state.modalUrl, this.state.alt);
   };
 
   toggleModal = () => {
@@ -40,7 +40,9 @@ export class App extends Component {
           toggleModal={this.toggleModal}
         />
         <ToastContainer transition={Flip} />
-        {showModal && <Modal src={modalUrl} alt={alt} />}
+        {showModal && (
+          <Modal src={modalUrl} alt={alt} onClose={this.toggleModal} />
+        )}
       </AppWrapper>
     );
   }

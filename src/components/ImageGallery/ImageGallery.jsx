@@ -47,7 +47,6 @@ export class ImageGallery extends Component {
             : { items: response.data.hits, page: 1 }
         );
         this.props.modalImage(this.state.items);
-        console.log(this.state.items);
       } catch (error) {
       } finally {
         this.setState({ isLoading: false });
@@ -57,14 +56,12 @@ export class ImageGallery extends Component {
 
   onClick = page => {
     this.setState({ page });
-    console.log(page);
   };
 
   onClickImage = ({ largeImageURL, tags }) => {
     this.setState({ largeImageURL, tags });
     this.props.modalImage({ largeImageURL, tags });
     this.props.toggleModal();
-    console.log({ largeImageURL, tags });
   };
 
   render() {
