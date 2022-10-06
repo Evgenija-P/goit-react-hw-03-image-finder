@@ -7,6 +7,7 @@ import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Loader } from 'components/Loader';
 import { List } from './ImageGallery.styled';
 import { toast } from 'react-toastify';
+import { isDisabled } from '@testing-library/user-event/dist/utils';
 
 export class ImageGallery extends Component {
   state = {
@@ -17,6 +18,7 @@ export class ImageGallery extends Component {
     error: null,
     largeImageURL: '',
     tags: '',
+    showButton: false,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -45,6 +47,7 @@ export class ImageGallery extends Component {
           state.items
             ? {
                 items: [...state.items, ...response.data.hits],
+                showButton: true,
               }
             : { items: response.data.hits, page: 1 }
         );
@@ -68,25 +71,29 @@ export class ImageGallery extends Component {
   };
 
   render() {
-    const { isLoading, items, page } = this.state;
+    const { isLoading, items, page, showButton } = this.state;
     return (
-      <div>
-        {isLoading && <Loader />}
-        {items && (
-          <List>
-            {items.map(({ id, webformatURL, tags, largeImageURL }) => (
-              <ImageGalleryItem
-                key={id}
-                webformatURL={webformatURL}
-                tags={tags}
-                largeImageURL={largeImageURL}
-                onClickImage={this.onClickImage}
-              />
-            ))}
-          </List>
-        )}
-        {items && <Button page={page} onClickButton={this.onClick} />}
-      </div>
+      <>
+        <div>
+          {isLoading && <Loader />}
+          {items && (
+            <List>
+              {items.map(({ id, webformatURL, tags, largeImageURL }) => (
+                <ImageGalleryItem
+                  key={id}
+                  webformatURL={webformatURL}
+                  tags={tags}
+                  largeImageURL={largeImageURL}
+                  onClickImage={this.onClickImage}
+                />
+              ))}
+            </List>
+          )}
+        </div>
+        <div>
+          {showButton && <Button page={page} onClickButton={this.onClick} />}
+        </div>
+      </>
     );
   }
 }
