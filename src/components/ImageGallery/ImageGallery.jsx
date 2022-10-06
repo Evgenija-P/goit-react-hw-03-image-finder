@@ -6,6 +6,7 @@ import { Button } from 'components/Button';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Loader } from 'components/Loader';
 import { List } from './ImageGallery.styled';
+import { toast } from 'react-toastify';
 
 export class ImageGallery extends Component {
   state = {
@@ -48,7 +49,8 @@ export class ImageGallery extends Component {
             : { items: response.data.hits, page: 1 }
         );
         this.props.modalImage(this.state.items);
-      } catch (error) {
+      } catch {
+        toast.error('Oops, something went wrong. Repeat one more time!');
       } finally {
         this.setState({ isLoading: false });
       }
