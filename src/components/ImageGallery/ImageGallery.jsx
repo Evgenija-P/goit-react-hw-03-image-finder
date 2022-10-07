@@ -31,6 +31,11 @@ export class ImageGallery extends Component {
       this.setState({ items: [], page: 1 });
     }
 
+    const options = {
+      position: 'top-center',
+      autoClose: 3000,
+    };
+
     if (prevPage !== currentPage || prevQuery !== nextQuery) {
       this.setState({ isLoading: true });
       try {
@@ -38,16 +43,37 @@ export class ImageGallery extends Component {
         this.setState(state =>
           state.items
             ? {
-                items: [...state.items, ...images],
+                items: [...state.items, ...images.hits],
                 showButton: true,
               }
-            : { items: images }
+            : { items: images.hits }
         );
+        if (images.totalHits > 0) {
+          toast.success(
+            `Hooray! We found ${images.totalHits} images.`,
+            options
+          );
+          const lastPage = Math.ceil(images.totalHits / perPage);
+          if (page === lastPage) {
+            toast.warn('Sorry, this is the last page...', options);
+            this.setState({ showButton: false });
+          }
+        } else {
+          toast.warn(
+            'Oops, we did not find anything for your request!',
+            options
+          );
+        }
       } catch {
-        toast.error('Oops, something went wrong. Repeat one more time!');
+        toast.error(
+          'Oops, something went wrong. Repeat one more time!',
+          options
+        );
       } finally {
         this.setState({ isLoading: false });
       }
+
+      // const total = images.totalHits;
     }
   }
 
@@ -79,7 +105,9 @@ export class ImageGallery extends Component {
             ))}
           </List>
         )}
-        {showButton && <Button page={page} onClickButton={this.onClick} />}
+        {showButton && (!items || items.length !== 0) && (
+          <Button page={page} onClickButton={this.onClick} />
+        )}
       </div>
     );
   }

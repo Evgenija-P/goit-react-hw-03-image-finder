@@ -8,5 +8,5 @@ export const fetchImage = async (page, perPage, nextQuery) => {
   const response = await axios.get(
     `${url}?${API_KEY}&q=${nextQuery}&${urlOptions}`
   );
-  return response.data.hits;
+  return response.data;
 };
