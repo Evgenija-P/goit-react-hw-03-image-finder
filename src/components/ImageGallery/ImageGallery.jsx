@@ -26,9 +26,14 @@ export class ImageGallery extends Component {
     const nextQuery = this.props.query;
     const prevPage = prevState.page;
     const currentPage = this.state.page;
+    const nextPage = this.props.page;
 
     if (prevQuery !== nextQuery) {
       this.setState({ items: [], page: 1 });
+    }
+
+    if (nextPage !== currentPage) {
+      this.setState({ page: this.props.page });
     }
 
     const options = {
@@ -48,17 +53,17 @@ export class ImageGallery extends Component {
               }
             : { items: images.hits }
         );
-        if (images.totalHits > 0) {
+        if (images.totalHits > 0 && prevQuery !== nextQuery) {
           toast.success(
             `Hooray! We found ${images.totalHits} images.`,
             options
           );
           const lastPage = Math.ceil(images.totalHits / perPage);
-          if (page === lastPage) {
+          if (page === lastPage && prevQuery !== nextQuery) {
             toast.warn('Sorry, this is the last page...', options);
             this.setState({ showButton: false });
           }
-        } else {
+        } else if (prevQuery !== nextQuery) {
           toast.warn(
             'Oops, we did not find anything for your request!',
             options
@@ -72,8 +77,6 @@ export class ImageGallery extends Component {
       } finally {
         this.setState({ isLoading: false });
       }
-
-      // const total = images.totalHits;
     }
   }
 

@@ -16,8 +16,8 @@ export class App extends Component {
     alt: '',
   };
 
-  onForm = ({ text }) => {
-    this.setState({ query: text });
+  onForm = ({ text, currentPage }) => {
+    this.setState({ query: text, page: currentPage });
   };
 
   modalImage = ({ largeImageURL, tags }) => {

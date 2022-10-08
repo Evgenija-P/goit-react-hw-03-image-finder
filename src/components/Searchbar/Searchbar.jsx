@@ -13,6 +13,7 @@ import {
 
 const DEFAULT_STATE = {
   text: '',
+  currentPage: 1,
 };
 
 export class Searchbar extends Component {
@@ -29,12 +30,9 @@ export class Searchbar extends Component {
       toast.error('Введите текст запроса!', { position: 'top-center' });
       return;
     }
+    this.setState({ currentPage: this.state.currentPage + 1 });
 
     this.props.onForm(this.state);
-  };
-
-  reset = () => {
-    this.setState({ ...DEFAULT_STATE });
   };
 
   render() {
