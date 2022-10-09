@@ -30,7 +30,7 @@ export class Searchbar extends Component {
       toast.error('Введите текст запроса!', { position: 'top-center' });
       return;
     }
-    this.setState({ currentPage: this.state.currentPage + 1 });
+    // this.setState({ currentPage: this.state.currentPage + 1 });
 
     this.props.onForm(this.state);
   };
