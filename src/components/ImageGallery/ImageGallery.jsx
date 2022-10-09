@@ -26,15 +26,15 @@ export class ImageGallery extends Component {
     const nextQuery = this.props.query;
     const prevPage = prevState.page;
     const currentPage = this.state.page;
-    const nextPage = this.props.page;
+    // const nextPage = this.props.page;
 
     if (prevQuery !== nextQuery) {
       this.setState({ items: [], page: 1 });
     }
 
-    if (nextPage !== currentPage) {
-      this.setState({ page: this.props.page });
-    }
+    // if (nextPage && nextPage !== currentPage) {
+    //   this.setState({ page: this.props.page });
+    // }
 
     const options = {
       position: 'top-center',
